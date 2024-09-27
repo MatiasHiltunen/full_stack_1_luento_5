@@ -1,7 +1,10 @@
 {
   "name": "full_stack_1_luento_5",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.1",
