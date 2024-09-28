@@ -16,7 +16,7 @@ Tietokantana (toistaiseksi)
 - sqlite https://www.npmjs.com/package/better-sqlite3
 - ORM:ina drizzle https://orm.drizzle.team/
 
-## #Käyttöönotto
+### Käyttöönotto
 1. Kloonaa repositorio
 
 2. Asenna paketit
@@ -45,7 +45,3 @@ Tietokannan hallintaan voidaan käyttää drizzle-kit paketin studiota komennoll
 npm run studio
 ```
 
-
-```
-open http://localhost:3000
-```
