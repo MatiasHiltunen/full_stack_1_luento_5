@@ -1,5 +1,10 @@
 ## FullStack 1 opintojakson luentoon 5 liittyvä esimerkki
 
+### Työkalut
+
+- Suositeltu työkalu HTTP-kyselyjen tekemiseen: VS Coden lisäosa `Thunder Client` (voi käyttää myös esim. Insomniaa tai Postmania)
+
+
 ### Backend
 
 _Backend-kirjastot ovat projektissa valittu niin että ne tukevat myös JS/TS pohjaisia edge-funktioiden suoritusympäristöjä_
@@ -35,6 +40,10 @@ npm run migrate
 npm run dev
 ```
 
+Tietokannan hallintaan voidaan käyttää drizzle-kit paketin studiota komennolla:
+```
+npm run studio
+```
 
 
 ```
