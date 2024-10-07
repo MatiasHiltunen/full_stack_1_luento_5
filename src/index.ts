@@ -1,20 +1,51 @@
 import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { Hono, MiddlewareHandler } from 'hono'
 import bcrypt from 'bcryptjs'
 
 import { db } from './db'
 import { users } from './schema'
+import { basicAuth } from 'hono/basic-auth'
+import { logger } from 'hono/logger'
+import { cors } from 'hono/cors'
+import { cache } from 'hono/cache'
+import { serveStatic } from '@hono/node-server/serve-static'
 
 // Luodaan app -muuttujaan Hono instanssi johon esim. user instanssi kytketään
 // /user polun luomiseksi
 const app = new Hono()
 
+
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  allowMethods: ["GET"]
+}))
+
+/* app.use(basicAuth({
+  username: "test", 
+  password:"salasana"
+})) */
+
+app.use(logger((str)=>{
+
+  console.log(new Date(), str)
+
+}))
+
 // Luodaan user -muuttujaan Hono instanssi jota käytetään /user polussa
 const user = new Hono()
 
-// Vastaa polkuun /user tehtyihin HTTP GET kyselyihin
-user.get('/', async (c) => {
+const customMiddleware: MiddlewareHandler = async (c, next) => {
 
+  console.log('middleware start')
+  await next()
+  console.log('middleware end')
+
+}
+
+// Vastaa polkuun /user tehtyihin HTTP GET kyselyihin
+user.get('/', customMiddleware, async (c) => {
+
+  console.log("handler")
   // Hakee kaikki käyttäjät tietokannasta
   const allUsers = await db.select({
     id: users.id,
@@ -54,17 +85,39 @@ user.post("/", async (c)=>{
 })
 
 
+
 // Kytketään user-muuttujassa oleva Hono-instanssi /user polkuun
-app.route("/user", user)
+app.route("/api/user", user)
 
-app.get('/', (c) => {
+app.use('/*', serveStatic({
+  root: './public/',
+}))
 
-  return c.json({
-    msg: "hello FullStack 1"
+
+/* app.get('/', (c) => {
+
+  // c.res.headers.set('Cache-Control', 'public, max-age=604800, immutable')
+  
+  return c.html(`
+    
+    <html>
+    <head>
+
+    </head>
+    <body>
+
+    <h1> ${ (new Date()).toLocaleTimeString('fi') } </h1>
+    
+    </body>
+    </html>
+    
+    
+    `)
+    
+  
+  
   })
-
-})
-
+ */
 const port = 3000
 console.log(`Server is running on port http://localhost:${port}`)
 
